@@ -3,19 +3,9 @@ import os
 import sys
 # pytorch
 import torch
-from torch.nn.modules.loss import _Loss
-import torchvision.transforms as transforms
-import torch.utils.data as torch_data
 import torch.nn as nn
 import torch.nn.init as init
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
-# stats
-import numpy as np
-# scale
-import cv_practical.main as cvp_utils
-# fancy stuff
-from tqdm import tqdm
 
 
 class DnCNN(nn.Module):

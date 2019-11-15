@@ -33,12 +33,10 @@ class CDNet(nn.Module):
 
         if bbone_weights is not None:
             self._init_bbone(bbone_weights)
-        self.conv1 = nn.Conv2d(in_planes, 6, kernel_size = 5, stride = 1)
-        self.conv2 = nn.Conv2d(6, 16, kernel_size = 5, stride = 1)
-        #self.conv3 = nn.Conv2d(16, 120, kernel_size = 5, stride = 1)
 
-        self.fc1   = nn.Linear(16*47*47, 47*47)
-        self.fc2   = nn.Linear(47*47, 3)
+        self.fc1   = nn.Linear(1089, 20*20)
+        self.fc2   = nn.Linear(20*20, 20)
+        self.fc3   = nn.Linear(20, 3)
 
         self.name = "cdnet"
 
@@ -46,20 +44,26 @@ class CDNet(nn.Module):
         b_dx, c_dx, w, h = x.size()
         out = self.denoiser(x)
 
-        out = self.conv1(x)
-        out = F.max_pool2d(out, 2)
-        out = F.relu(out)
+        out = F.avg_pool2d(out, 3, stride=3)
+        out = F.avg_pool2d(out, 2, stride=2)
 
+        """
         out = self.conv2(out)
-        out = F.max_pool2d(out, 2)
         out = F.relu(out)
 
+        out = self.conv3(out)
+        out = F.max_pool2d(out, 2)
+        out = F.relu(out)
+        """
         out = out.view(b_dx, -1)
 
         out = self.fc1(out)
         out = F.relu(out)
 
         out = self.fc2(out)
+        out = F.relu(out)
+
+        out = self.fc3(out)
 
         return out
 

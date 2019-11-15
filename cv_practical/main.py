@@ -1,7 +1,15 @@
+import sys
+sys.path.append('..')
 import numpy as np
 from shapely.geometry.point import Point
 from skimage.draw import circle_perimeter_aa
 import matplotlib.pyplot as plt
+# pytorch
+import torch
+# models
+from models import cdnet
+from models import dncnn
+
 
 def draw_circle(img, row, col, rad):
     rr, cc, val = circle_perimeter_aa(row, col, rad)
@@ -30,8 +38,20 @@ def noisy_circle(size, radius, noise):
 
 
 def find_circle(img):
-    # Fill in this function
-    return 100, 100, 30
+    img = min_max(img)
+
+    img = torch.tensor(
+        np.expand_dims(np.array([img]), axis=0)
+    ).float()
+
+    out = model(img).detach().numpy()[0]
+    out = [
+        out[0]*100+100,
+        out[1]*100+100,
+        out[2]*40+10
+    ]
+
+    return out
 
 
 def iou(params0, params1):
@@ -47,11 +67,34 @@ def iou(params0, params1):
     )
 
 
+def load_model(model_path):
+    model = cdnet.CDNet(
+        in_planes = 1,
+        bbone=dncnn.DnCNN()
+    )
+
+    checkpoint = torch.load(model_path)
+    model.load_state_dict(checkpoint['model'])
+    model.to(torch.device("cpu"))
+    return model
+
 def main():
+    """Added by Kaunil D.
+    """
+    global model
+    model = load_model('../results/models/cdnet-30.pth')
+
+    global min_max
+    min_max = lambda a: (a-np.min(a))/(np.max(a) - np.min(a))
+
     results = []
     for _ in range(1000):
-        params, img = noisy_circle(200, 50, 2)
+        params, img, _ = noisy_circle(200, 50, 2)
         detected = find_circle(img)
         results.append(iou(params, detected))
     results = np.array(results)
     print((results > 0.7).mean())
+
+
+if __name__=="__main__":
+    main()
