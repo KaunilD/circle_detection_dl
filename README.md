@@ -33,7 +33,7 @@ A quick test can be run using the `param_tester.py` script. This script uses the
 
 1. Results of the denoising  pipeline using DnCNN
 
-   1. Total number of parameters: 112192
+   1. Total number of parameters: 1122
 
    2. | noisy image input                                            | target image                                                 | denoised output                                              |
       | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
