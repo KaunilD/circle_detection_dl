@@ -48,7 +48,7 @@ A quick test can be run using the `param_tester.py` script. This script uses the
 
 2. Results for CDNet (End to end model):
 
-   1. Total number of parameters (excluding the DnCNN backbone): 444467
+   1. Total number of parameters (excluding the DnCNN backbone): 4467
    2. Model test score (IOU metric):
 
    ​										 ![](./results/test_score.png)
