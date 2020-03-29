@@ -1,13 +1,11 @@
-#### CV Practical: Circle detection in a noisy image.
+#### CV vs Deep Learning: Circle detection in a noisy image.
 
 __Overview__
 
-Goal of this assignment is to build a deep learning pipeline to predict parameters of a circle ( center (x, y) and radius (r)) embedded in a noisy/occluded image $I_N$. The pipeline delineated in the following sectionscontains 2 key elements:
+Goal of this experiment is to investigate the performance of a CNN based Circle Detector to predict parameters of a circle ( center (x, y) and radius (r)) embedded in a noisy/occluded image $I_N$. The pipeline delineated in the following sections contains 2 key elements:
 
 1. The denoising backbone - DnCNN.
 2. The feature extractor - CDNet.
-
-Time taken for modelling the architecture: $\approx$ 20 minutes and cumulative training time for both the networks: $\approx$ 2 hours, spread out over a day on an AWS P2 instance.
 
 __The denoising backbone: [DnCNN](https://arxiv.org/pdf/1608.03981.pdf)__
 
@@ -39,22 +37,22 @@ A quick test can be run using the `param_tester.py` script. This script uses the
 
    2. | noisy image input                                            | target image                                                 | denoised output                                              |
       | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-      | ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\images\0.png) | ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\images\0_targ.png) | ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\images\0_pred.png) |
-      | ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\images\1.png) | ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\images\1_targ.png) | ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\images\1_pred.png) |
+      | ![](./results/images/0.png) | ![](./results/images/0_targ.png) | ![](./results/images/0_pred.png) |
+      | ![](./results/images/1.png) | ![](./results/images/1_targ.png) | ![](./results/images/1_pred.png) |
 
       
 
    3. Model training and test loss for DnCNN:
 
-      ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\dncnn_plot.png)
+      ![](./results/dncnn_plot.png)
 
 2. Results for CDNet (End to end model):
 
    1. Total number of parameters (excluding the DnCNN backbone): 444467
    2. Model test score (IOU metric):
 
-   ​										 ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\test_score.png)
+   ​										 ![](./results/test_score.png)
 
    3. Model training, test and IOU (train in orange, test in blue and IOU in green): 
 
-   ![](C:\Users\dhruv\Development\git\circle_detection_dl\results\cdnet_plot.png)
+   ![](./results/cdnet_plot.png)
