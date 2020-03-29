@@ -20,6 +20,12 @@ from tqdm import tqdm
 
 
 def test(model, device, dataloader):
+    """Tests the performance of a model using IOU metric defined in
+    cv_practical.main.
+
+        Returns:
+            mean IOU of the entire dataset held by dataloader.
+    """
     model.eval()
     val_loss = 0.0
     tbar = tqdm(dataloader)
@@ -79,14 +85,9 @@ if __name__=="__main__":
     print("torch.cuda.current_device() =", torch.cuda.current_device())
     print()
 
-    epochs = 100
+    epochs = 20
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    test_dataset = CIRCLEDataset(count=1000, noise=2, random_noise=False,
-        debug=False)
-
-    test_dataloader = torch_data.DataLoader(test_dataset, num_workers=0,
-        batch_size=32)
 
     model = CDNet(
         in_planes = 1,
@@ -99,7 +100,19 @@ if __name__=="__main__":
     model.to(device)
 
     print("total parameters: {}".format(total_parameters(model)))
-
+    noise = 0
+    test_scores = []
     for epoch in range(epochs):
+        noise += 0.1
+
+        test_dataset = CIRCLEDataset(count=1000, noise=2, random_noise=False,
+        debug=False)
+        test_dataloader = torch_data.DataLoader(test_dataset, num_workers=0,
+        batch_size=32)
+
         test_score = test(model, device, test_dataloader)
-        print(test_score)
+
+        test_scores.append([noise, test_score])
+        np.save("test_scores", test_scores)
+
+        print("noise: {}, test_score: {}".format(noise, test_score))

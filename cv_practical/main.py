@@ -94,7 +94,3 @@ def main():
         results.append(iou(params, detected))
     results = np.array(results)
     print((results > 0.7).mean())
-
-
-if __name__=="__main__":
-    main()

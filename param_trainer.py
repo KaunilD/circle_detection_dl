@@ -6,11 +6,14 @@ import torch
 import torch.utils.data as torch_data
 # models
 from models.cdnet import CDNet
+import torch.nn as nn
 from models.dncnn import DnCNN
 # dataloaders
 from dataset import CIRCLEDataset
 # stats
 import numpy as np
+# scale
+import cv_practical.main as cvp_utils
 # fancy stuff
 from tqdm import tqdm
 
@@ -53,6 +56,12 @@ def validate(model, criterion, device, dataloader):
 
 
 def test(model, device, dataloader):
+    """Tests the performance of a model using IOU metric defined in
+    cv_practical.main.
+
+        Returns:
+            mean IOU of the entire dataset held by dataloader.
+    """
     model.eval()
     val_loss = 0.0
     tbar = tqdm(dataloader)
